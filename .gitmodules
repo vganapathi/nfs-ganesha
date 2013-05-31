@@ -1,0 +1,3 @@
+[submodule "src/libntirpc"]
+	path = src/libntirpc
+	url = git://git-int.panasas.com/ntirpc.git
