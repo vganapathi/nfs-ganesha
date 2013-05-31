@@ -1,4 +1,3 @@
 [submodule "src/libntirpc"]
 	path = src/libntirpc
-	url = http://github.com/nfs-ganesha/ntirpc.git 
-
+	url = git://git-int.panasas.com/ntirpc.git
