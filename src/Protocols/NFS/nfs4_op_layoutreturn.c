@@ -476,6 +476,7 @@ nfsstat4 nfs4_return_one_state(
 
                         arg->cur_segment = g->sls_segment;
                         arg->fsal_seg_data = g->sls_fsal_data;
+                        /* TODO: why this check does not work */
                         arg->last_segment = (seg_next->next ==
 					     seg_next);
 
@@ -486,6 +487,7 @@ nfsstat4 nfs4_return_one_state(
 							 &g->sls_segment)) {
                                 arg->dispose = false;
                         } else {
+                                seg_locked = false;
                                 pthread_mutex_unlock(&g->sls_mutex);
                                 continue;
                         }
@@ -517,10 +519,10 @@ nfsstat4 nfs4_return_one_state(
                                         = pnfs_segment_difference(
                                                 &spec_segment,
                                                 &g->sls_segment);
+                                seg_locked = false;
                                 pthread_mutex_unlock(&g->sls_mutex);
                         }
                 }
-                seg_locked = false;
 
                 if (body_val) {
                         /* This really should work in all cases for an
