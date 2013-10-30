@@ -4,6 +4,10 @@
 
 cmake_minimum_required(VERSION 2.6.3)
 
+if(COMMAND cmake_policy)
+    cmake_policy(SET CMP0017 NEW)
+endif(COMMAND cmake_policy)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 project(nfs-ganesha C)
@@ -490,7 +494,8 @@ if(USE_DBUS)
   find_package(PkgConfig)
   pkg_check_modules(DBUS REQUIRED dbus-1)
   set(SYSTEM_LIBRARIES ${DBUS_LIBRARIES} ${SYSTEM_LIBRARIES})
-  LIST(APPEND CMAKE_LIBRARY_PATH ${DBUS_LIBARY_DIRS})
+  LIST(APPEND CMAKE_LIBRARY_PATH ${DBUS_LIBRARY_DIRS})
+  link_directories (${DBUS_LIBRARY_DIRS})
 endif(USE_DBUS)
 
 if(USE_NFSIDMAP)
@@ -561,6 +566,13 @@ check_library_exists(
 	""
 	HAVE_LIBCAP 
 	)
+if(LINUX)
+if( HAVE_LIBCAP )
+  message( STATUS "Found libcap" ) 
+else( HAVE_LIBCAP )
+  message( FATAL_ERROR "You need to install libcap to compile Ganesha" )
+endif( HAVE_LIBCAP )
+endif(LINUX)
 
 # Roll up required libraries
 
